@@ -6,7 +6,10 @@ namespace Strategy
     {
         static void Main(string[] args)
         {
-            ShoppingCart cart = new ShoppingCart();
+            IPaymentStrategy  paypalStrategy= new PaypalStrategy("jeff.bezos@amazon.com", "mypwd", 100);
+            IPaymentStrategy creditCardStrategy = new CreditCardStrategy("Jeff Bezos", 190);
+
+            ShoppingCart cart = new ShoppingCart(paypalStrategy);
 
             Item item1 = new Item("banana", 10);
             Item item2 = new Item("milk", 40);
@@ -14,9 +17,11 @@ namespace Strategy
             cart.addItem(item1);
             cart.addItem(item2);
 
-            cart.pay(new PaypalStrategy("jeff.bezos@amazon.com", "mypwd", 100));
+            cart.pay();
 
-            cart.pay(new CreditCardStrategy("Jeff Bezos", 190));
+
+            cart.setStrategy(creditCardStrategy);
+            cart.pay();
         }
     }
 }

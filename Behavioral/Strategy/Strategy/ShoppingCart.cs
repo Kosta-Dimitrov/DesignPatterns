@@ -9,10 +9,12 @@ namespace Strategy
     public class ShoppingCart
     {
         private List<Item> items;
+        private IPaymentStrategy paymentStrategy;
 
-        public ShoppingCart()
+        public ShoppingCart(IPaymentStrategy paymentStrategy)
         {
             this.items = new List<Item>();
+            setStrategy(paymentStrategy);
         }
 
         public void addItem(Item item)
@@ -20,11 +22,15 @@ namespace Strategy
             this.items.Add(item);
         }
 
+        public void setStrategy(IPaymentStrategy paymentStrategy)
+        {
+            this.paymentStrategy = paymentStrategy;
+        }
 
-        public void pay(IPaymentStrategy paymentMethod)
+        public void pay()
         {
             double amount = this.calculateTotal();
-            paymentMethod.pay(amount);
+            this.paymentStrategy.pay(amount);
         }
 
         private double calculateTotal()
